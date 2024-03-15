@@ -34,6 +34,7 @@ const Profile = () => {
 
     const LogoutHandle = ()=>{
         localStorage.removeItem('token')
+        localStorage.removeItem('userId')
         navigate('/login')
     }
 

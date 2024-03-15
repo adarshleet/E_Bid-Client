@@ -26,8 +26,8 @@ const Login = () => {
         const res = await login(user)
         if(res){
             toast.success('Login successful.')
-            console.log(res)
             localStorage.setItem('token',res.data.token)
+            localStorage.setItem('userId',res.data.user)
             navigate('/')
         }
     }

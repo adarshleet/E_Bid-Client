@@ -14,7 +14,7 @@ const BidList = ({title,items}) => {
                         
                         <div className="w-11/12 h-[220px] overflow-hidden mx-auto aspect-w-16 aspect-h-8 md:mb-2 mb-4">
                             <img
-                                src={`http://localhost:3000/images/${item.item.image.filename}`}
+                                src={`${import.meta.env.VITE_BASE_URL}/images/${item.item.image.filename}`}
                                 alt="Product 3"
                                 className="h-full w-full object-contain"
                             />
