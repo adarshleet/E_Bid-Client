@@ -1,18 +1,64 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../../components/Navbar'
 import Table from '../../components/Table'
+import { useParams } from 'react-router-dom';
+import { singleItem } from '../../apis/item';
+import { createBid, userBid } from '../../apis/bids';
 
 const Product = () => {
+    const { id } = useParams();
+
+    const [item,setItem] = useState(null)
+    const [bidInput,setBidInput] = useState(false)
+    const [bidAmount,setBidAmount] = useState(null)
+
+    const [usersBid,setUsersBid] = useState(null)
+
+
+    useEffect(()=>{
+        const fetchData = async()=>{
+            const res = await singleItem(id)
+            setItem(res.data)
+            const singleBid = await userBid(id)
+            console.log(singleBid)
+            setUsersBid(singleBid.data)
+        }
+        fetchData()
+    },[])
+
+
+    const formatDate = (dateString) => {
+        // Create a Date object from the dateString
+        const date = new Date(dateString);
+        
+        // Get the day, month, and year
+        const day = date.getDate();
+        const month = date.toLocaleString('default', { month: 'long' });
+        const year = date.getFullYear();
+        
+        // Construct the formatted date string
+        const formattedDate = `${day} ${month} ${year}`;
+        
+        return formattedDate;
+    };
+
+
+    const confirmBid = async()=>{
+        const res = await createBid(id,bidAmount)
+        console.log(res)
+    }
+
     return (
         <>
         <Navbar/>
         <div className=" bg-white">
             <div className="p-6 lg:max-w-7xl max-w-4xl mx-auto">
+                {item &&
                 <div className="grid items-start grid-cols-1 lg:grid-cols-5 gap-12 shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] p-6">
                     <div className="lg:col-span-3 w-full lg:sticky top-0 text-center">
                         <div className="px-4 py-10 rounded-xl shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] relative">
                             <img
-                                src="https://readymadeui.com/images/laptop5.webp"
+                                src={`http://localhost:3000/images/${item.image.filename}`}
                                 alt="Product"
                                 className="w-4/5 rounded object-cover"
                             />
@@ -34,34 +80,58 @@ const Product = () => {
                         
                     </div>
                     <div className="lg:col-span-2">
-                        <h2 className="text-2xl font-extrabold text-[#333]">
-                            Acer Aspire Pro 12 | Laptop
+                        <h2 className="text-4xl font-extrabold text-[#333]">
+                            {item.itemName}
                         </h2>
                         <div className="flex flex-wrap gap-4 mt-6">
-                            <p className="text-[#333] text-4xl font-bold">$1200</p>
+                            <p className="text-[#333] text-4xl font-bold">₹{item.bidStartPrice}</p>
                             {/* <p className="text-gray-400 text-xl">
                                 <strike>$1500</strike>{" "}
                                 <span className="text-sm ml-1">Tax included</span>
                             </p> */}
                         </div>
+                        <div className='py-2 font-bold'>
+                           <h1> Start Date : {formatDate(item.bidStartDate)}</h1>
+                           <h1>End Date : {formatDate(item.bidEndDate)}</h1>
+                        </div>
                     
                       
                         <div className="flex flex-wrap gap-4 mt-10">
-                            <button
+                            {usersBid ? 
+
+                            <>
+                           <div className='flex flex-col'>
+                                <h1 className='text-2xl font-bold'>Bid Added</h1>
+                                <h3>Amount : {usersBid.bidAmount}</h3>
+                           </div>
+                            </>
+                            
+                            
+                            :(item.status === 'started' && !bidInput &&
+                                <button
+                                onClick={()=>setBidInput(true)}
                                 type="button"
                                 className="min-w-[200px] px-4 py-3 bg-[#333] hover:bg-[#111] text-white text-sm font-bold rounded"
                             >
-                                Buy now
-                            </button>
-                            <button
+                                Add a bid
+                            </button>)}
+                            {/* <button
                                 type="button"
                                 className="min-w-[200px] px-4 py-2.5 border border-[#333] bg-transparent hover:bg-gray-50 text-[#333] text-sm font-bold rounded"
                             >
                                 Add to cart
-                            </button>
+                            </button> */}
                         </div>
+                        {bidInput &&
+                        <div className='py-2 flex flex-col gap-2'>
+                            <input type="number"onChange={(e)=>setBidAmount(e.target.value)} value={bidAmount}/>
+                            <div className='flex gap-2'>
+                                <button className='py-2 px-3 font-bold bg-green-600 rounded-md text-white w-full' onClick={confirmBid}>Confirm</button>   
+                                <button className='py-2 px-3 font-bold bg-red-800 rounded-md text-white w-full' onClick={(e)=>setBidInput(false)}>Cancel</button> 
+                            </div>
+                        </div>}
                     </div>
-                </div>
+                </div>}
                 <Table/>
             </div>
         </div>

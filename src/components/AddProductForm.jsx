@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
 import { addItem } from '../apis/item'
-
+import {toast} from 'react-toastify'
 const AddProductForm = ({ setShowModal }) => {
 
 
     const [product,setProduct] = useState({
-        itemName:null,
+        itemName:'',
         bidStartPrice:null,
         bidStartDate:null,
         bidEndDate:null,
@@ -15,7 +15,23 @@ const AddProductForm = ({ setShowModal }) => {
 
     const addProductHandle = async(e)=>{
         e.preventDefault()
-        console.log(product)
+
+        if(product.itemName.trim().length < 3){
+            return toast.error('Enter valid product name')
+        }
+        else if(!product.bidStartPrice || product.bidStartPrice == 0){
+            return toast.error('Enter valid product price')
+        }
+        else if(!product.bidStartDate || new Date(product.bidStartDate) < new Date()){
+            return toast.error('Please enter an upcoming date')
+        }
+        else if(!product.bidEndDate || new Date(product.bidStartDate) >= new Date(product.bidEndDate) ){
+            return toast.error('Please enter an upcoming date for ending date')
+        }
+        else if(!product.image){
+            return toast.error('Please select an image')
+        }
+
         const form = new FormData()
         form.append('itemName',product.itemName)
         form.append('bidStartPrice',product.bidStartPrice)
@@ -25,6 +41,10 @@ const AddProductForm = ({ setShowModal }) => {
 
         const res = await addItem(form)
         console.log(res)
+        if(res){
+            setShowModal(false)
+            toast.success('New product added.')
+        }
     }
 
 
@@ -65,7 +85,7 @@ const AddProductForm = ({ setShowModal }) => {
                         <input
                             value={product.bidStartPrice}
                             onChange={(e)=>setProduct({...product,bidStartPrice:e.target.value})}
-                            type="text"
+                            type="number"
                             name='bidStartPrice'
                             placeholder="Enter Minimum Bid Amount"
                             className="px-4 py-3 bg-white text-[#333] w-full text-sm border-2 outline-[#007bff] rounded-lg"

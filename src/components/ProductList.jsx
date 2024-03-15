@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { userItems } from '../apis/item'
+import { Link } from 'react-router-dom'
 
 const ProductList = ({ title,items}) => {
 
@@ -12,7 +13,7 @@ const ProductList = ({ title,items}) => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 {items && 
                 items.map((item, index) => (
-                    <div className="bg-white rounded-2xl p-6 cursor-pointer hover:-translate-y-2 transition-all relative shadow-md">
+                    <Link to={`/product/${item._id}`} className="bg-white rounded-2xl p-6 cursor-pointer hover:-translate-y-2 transition-all relative shadow-md">
                         
                         <div className="w-11/12 h-[220px] overflow-hidden mx-auto aspect-w-16 aspect-h-8 md:mb-2 mb-4">
                             <img
@@ -28,7 +29,7 @@ const ProductList = ({ title,items}) => {
                             </p> */}
                             <h4 className="text-lg text-gray-700 font-bold mt-4">₹{item.bidStartPrice}</h4>
                         </div>
-                    </div>
+                    </Link>
                 ))}
 
             </div>

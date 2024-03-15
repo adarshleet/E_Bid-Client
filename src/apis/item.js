@@ -34,3 +34,14 @@ export const itemsToShow = async()=>{
         return errorHandle(error)
     }
 }
+
+
+export const singleItem = async(id)=>{
+    try {
+        const res = await Api.get(`${itemRoutes.singleItem}?id=${id}`)
+        return res
+    } catch (error) {
+        console.log(error)
+        return errorHandle(error)
+    }
+}

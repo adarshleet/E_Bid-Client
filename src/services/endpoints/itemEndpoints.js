@@ -3,7 +3,9 @@ const itemRoutes = {
 
     userItems : '/items/userItems',
 
-    itemsToShow : '/items/itemsToShow'
+    itemsToShow : '/items/itemsToShow',
+
+    singleItem : '/items/singleItem'
 }
 
 export default itemRoutes

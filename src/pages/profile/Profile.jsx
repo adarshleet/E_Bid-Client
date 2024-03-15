@@ -3,6 +3,7 @@ import Navbar from '../../components/Navbar'
 import ProductList from '../../components/ProductList'
 import AddProductForm from '../../components/AddProductForm'
 import { userItems } from '../../apis/item'
+import axios from 'axios'
 
 const Profile = () => {
 
@@ -18,7 +19,13 @@ const Profile = () => {
             setItems(res.data)
         }
         fetchData()
-    },[])
+    },[showModal])
+
+
+    const setTime = async()=>{
+        const res = await axios.get('http://localhost:3000/items/setTime')
+        console.log(res)
+    }
 
     return (
         <>
@@ -85,9 +92,11 @@ const Profile = () => {
                                                 className="bg-pink-500 active:bg-pink-600 uppercase text-white font-bold hover:shadow-md shadow text-xs px-4 py-2 rounded outline-none focus:outline-none sm:mr-2 mb-1 ease-linear transition-all duration-150"
                                                 type="button"
                                             >
-                                                Your Bidded Items
+                                                Your Bids
                                             </button>
                                         </div>
+                                        <button className='bg-red-800 text-white p-2' onClick={setTime}>set time</button>
+
                                     </div>
                                     <div className="w-full lg:w-4/12 px-4 lg:order-1">
                                         <div className="flex justify-center py-4 lg:pt-4 pt-8">
@@ -128,7 +137,7 @@ const Profile = () => {
                                     </>
 
                                     :
-                                    <ProductList title={'Bidded Items'} />
+                                    <ProductList title={'Your Bids'} />
                                 }
                                 {/* <div className="text-center mt-6">
                                 <h3 className="text-4xl font-semibold leading-normal mb-2 text-blueGray-700">
