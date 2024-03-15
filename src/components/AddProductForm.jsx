@@ -1,11 +1,32 @@
 import React, { useState } from 'react'
+import { addItem } from '../apis/item'
 
 const AddProductForm = ({ setShowModal }) => {
 
 
     const [product,setProduct] = useState({
-        
+        itemName:null,
+        bidStartPrice:null,
+        bidStartDate:null,
+        bidEndDate:null,
+        image:null
     })
+
+
+    const addProductHandle = async(e)=>{
+        e.preventDefault()
+        console.log(product)
+        const form = new FormData()
+        form.append('itemName',product.itemName)
+        form.append('bidStartPrice',product.bidStartPrice)
+        form.append('bidStartDate',product.bidStartDate)
+        form.append('bidEndDate',product.bidEndDate)
+        form.append('image',product.image)
+
+        const res = await addItem(form)
+        console.log(res)
+    }
+
 
     return (
         <div className="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]">
@@ -28,10 +49,13 @@ const AddProductForm = ({ setShowModal }) => {
                     <h4 className="text-3xl text-[#333] font-extrabold">Add New Product</h4>
 
                 </div>
-                <form className="space-y-4">
+                <form className="space-y-4" onSubmit={(e)=>addProductHandle(e)}>
                     <div className="relative flex items-center">
                         <input
+                            value={product.itemName}
+                            onChange={(e)=>setProduct({...product,itemName:e.target.value})}
                             type="text"
+                            name='itemName'
                             placeholder="Enter Product Name"
                             className="px-4 py-3 bg-white text-[#333] w-full text-sm border-2 outline-[#007bff] rounded-lg"
                         />
@@ -39,7 +63,10 @@ const AddProductForm = ({ setShowModal }) => {
                     </div>
                     <div className="relative flex items-center">
                         <input
+                            value={product.bidStartPrice}
+                            onChange={(e)=>setProduct({...product,bidStartPrice:e.target.value})}
                             type="text"
+                            name='bidStartPrice'
                             placeholder="Enter Minimum Bid Amount"
                             className="px-4 py-3 bg-white text-[#333] w-full text-sm border-2 outline-[#007bff] rounded-lg"
                         />
@@ -49,6 +76,9 @@ const AddProductForm = ({ setShowModal }) => {
                         <div className="relative items-center">
                             <label htmlFor="">Enter starting date</label>
                             <input
+                                value={product.bidStartDate}
+                                onChange={(e)=>setProduct({...product,bidStartDate:e.target.value})}
+                                name='bidStartDate'
                                 type="date"
                                 placeholder="Enter Minimum Bid Amount"
                                 className="px-4 py-3 bg-white text-[#333] w-full text-sm border-2 outline-[#007bff] rounded-lg"
@@ -58,6 +88,9 @@ const AddProductForm = ({ setShowModal }) => {
                         <div className="relative items-center">
                             <label htmlFor="">Enter closing date</label>
                             <input
+                                value={product.bidEndDate}
+                                onChange={(e)=>setProduct({...product,bidEndDate:e.target.value})}
+                                name='bidEndDate'
                                 type="date"
                                 placeholder="Enter Minimum Bid Amount"
                                 className="px-4 py-3 bg-white text-[#333] w-full text-sm border-2 outline-[#007bff] rounded-lg"
@@ -65,11 +98,14 @@ const AddProductForm = ({ setShowModal }) => {
 
                         </div>
                     </div>
-                    <div>
-                        <input type="file" name="" id="" />
+                    <div className='flex items-center'>
+                        <input type="file" name="image" id="" onChange={(e)=>setProduct({...product,image:e.target.files[0]})}/>
+                        {product.image &&
+                            <img width={200} src={URL.createObjectURL(product.image)} alt="" />
+                        }
                     </div>
                     <button
-                        type="button"
+                        type="submit"
                         className="px-6 py-2.5 !mt-8 w-full font-semibold bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-full"
                     >
                         Add Product

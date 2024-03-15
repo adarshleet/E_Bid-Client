@@ -19,7 +19,7 @@ const Navbar = () => {
                     <div className="order-2 md:order-3">
                         {user ?
 
-                            <Link to='/login' className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-gray-50 rounded-xl flex items-center gap-2">
+                            <Link to='/profile' className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-gray-50 rounded-xl flex items-center gap-2">
                                 {/* Heroicons - Login Solid */}
                                 
                                 <span>Profile</span>

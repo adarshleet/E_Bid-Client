@@ -1,12 +1,24 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from '../../components/Navbar'
 import ProductList from '../../components/ProductList'
 import AddProductForm from '../../components/AddProductForm'
+import { userItems } from '../../apis/item'
 
 const Profile = () => {
 
     const [showingItems, setShowingItems] = useState(true)
     const [showModal,setShowModal] = useState(false)
+
+    const [items,setItems] = useState(null)
+
+    useEffect(()=>{
+        const fetchData = async()=>{
+            const res = await userItems()
+            console.log('tehis',res.data)
+            setItems(res.data)
+        }
+        fetchData()
+    },[])
 
     return (
         <>
@@ -112,7 +124,7 @@ const Profile = () => {
                                                 Add New Item
                                             </button>
                                         </div>
-                                        <ProductList title={'Your Products'} />
+                                        <ProductList title={'Your Products'} items={items}/>
                                     </>
 
                                     :
