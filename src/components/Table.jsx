@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Table = () => {
+const Table = ({itemAllBids}) => {
     return (
         <div className="overflow-x-auto py-8">
             <table className="min-w-full bg-white font-[sans-serif]">
@@ -17,14 +17,21 @@ const Table = () => {
                     </tr>
                 </thead>
                 <tbody className="whitespace-nowrap w-full">
-                    <tr className="odd:bg-blue-50">
+                    {itemAllBids?.length > 0 ?
+                    itemAllBids.map((bid,index)=>(
+                        <tr className="odd:bg-blue-50"key={index}>
                         <td className="px-6 py-4">
-                            <p className="text-base text-black">Gladys Jones</p>
+                            <p className="text-base text-black">{bid.user.name}</p>
                         </td>
                        
-                        <td className="px-6 py-4 text-base">$150.66</td>
+                        <td className="px-6 py-4 text-base">₹{bid.bidAmount}</td>
                        
                     </tr>
+                    )) : 
+                        <div className='w-full text-center font-bold text-2xl'>
+                            <h1>No Bids Found</h1>
+                        </div>
+                    }
                     {/* <tr className="odd:bg-blue-50">
                         <td className="px-6 py-3 text-sm">
                             <div className="flex items-center cursor-pointer">
@@ -260,14 +267,14 @@ const Table = () => {
                         <option>50</option>
                         <option>100</option>
                     </select> */}
-                    <div className="border flex rounded divide-x-2">
+                    {/* <div className="border flex rounded divide-x-2">
                         <button type="button" className="px-4 py-2 hover:bg-gray-200 text-sm">
                             Previous
                         </button>
                         <button type="button" className="px-4 py-2 hover:bg-gray-200 text-sm">
                             Next
                         </button>
-                    </div>
+                    </div> */}
                 </div>
             </div>
         </div>

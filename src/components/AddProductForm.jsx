@@ -9,14 +9,20 @@ const AddProductForm = ({ setShowModal }) => {
         bidStartPrice:null,
         bidStartDate:null,
         bidEndDate:null,
-        image:null
+        image:null,
+        type:null
     })
 
 
     const addProductHandle = async(e)=>{
         e.preventDefault()
 
-        if(product.itemName.trim().length < 3){
+
+        if(!product.type){
+            return toast.error('Please Select sale type')
+        }
+
+        else if(product.itemName.trim().length < 3){
             return toast.error('Enter valid product name')
         }
         else if(!product.bidStartPrice || product.bidStartPrice == 0){
@@ -38,6 +44,7 @@ const AddProductForm = ({ setShowModal }) => {
         form.append('bidStartDate',product.bidStartDate)
         form.append('bidEndDate',product.bidEndDate)
         form.append('image',product.image)
+        form.append('type',product.type)
 
         const res = await addItem(form)
         console.log(res)
@@ -70,6 +77,19 @@ const AddProductForm = ({ setShowModal }) => {
 
                 </div>
                 <form className="space-y-4" onSubmit={(e)=>addProductHandle(e)}>
+                    <div>
+                    <h1>Sale Type</h1>
+                    <div className='relative flex items-center gap-x-4'>
+                        <div>
+                            <label className='px-2' htmlFor="">Fixed Sale</label>
+                            <input checked={product.type === 'fixed'} value='fixed' onChange={(e)=>setProduct({...product,type:e.target.value})} type="radio" name='type'/>
+                        </div>
+                        <div>
+                            <label className='px-2' htmlFor="">Auction Sale</label>
+                            <input type="radio" value='auction' checked={product.type === 'auction'} onChange={(e)=>setProduct({...product,type:e.target.value})} name='type'/>
+                        </div>
+                    </div>
+                    </div>
                     <div className="relative flex items-center">
                         <input
                             value={product.itemName}

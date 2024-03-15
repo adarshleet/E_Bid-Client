@@ -2,7 +2,7 @@ import { useState } from 'react'
 
 import Product from './pages/singleProduct/Product.jsx'
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route,Navigate } from "react-router-dom";
 import Products from './pages/products/Products.jsx';
 import Login from './pages/login/Login.jsx';
 import Signup from './pages/signup/Signup.jsx';
@@ -18,10 +18,12 @@ function App() {
         <Router>
             <Routes>
                 <Route path='/' element={<Products/>}/>
-                <Route path='/login' element={<Login/>}/>
-                <Route path='/signup' element={<Signup/>}/>
-                <Route path='/profile' element={<Profile/>}/>
+                <Route path='/login' element={!user ? <Login/> : <Navigate to="/" />}/>
+                <Route path='/signup' element={!user ? <Signup/> : <Navigate to='/' />}/>
+
+                <Route path="/profile" element={user ? <Profile /> : <Navigate to="/login" />} />
                 <Route path='/product/:id' element={<Product/>}/>
+
             </Routes>
         </Router>
     )

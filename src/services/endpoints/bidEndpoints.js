@@ -1,7 +1,11 @@
 const bidRoutes = {
     createBid : '/bids/createBid',
 
-    userBid : '/bids/userBid'
+    userBid : '/bids/userBid',
+
+    allBids : '/bids/allBids',
+
+    userBids : '/bids/userBids'
 }
 
 

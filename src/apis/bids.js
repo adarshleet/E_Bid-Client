@@ -25,3 +25,29 @@ export const userBid = async(id)=>{
         return errorHandle(error)
     }
 }
+
+
+
+//get all bids of a product
+export const allBids = async(id)=>{
+    try {
+        const res = await Api.get(`${bidRoutes.allBids}?id=${id}`)
+        return res
+    } catch (error) {
+        console.log(error)
+        return errorHandle(error)
+    }
+}
+
+
+
+//get all user baded items
+export const userBids = async(id)=>{
+    try {
+        const res = await Api.get(bidRoutes.userBids)
+        return res
+    } catch (error) {
+        console.log(error)
+        return errorHandle(error)
+    }
+}
