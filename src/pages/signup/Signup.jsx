@@ -17,14 +17,37 @@ const Signup = () => {
     const navigate = useNavigate()
 
 
+    
+
     const signupHandle = async(e)=>{
         e.preventDefault()
+        if(user.name.trim().length < 3){
+            return toast.error('Enter a valid name')
+        }
+        else if(!validateEmail(user.email)){
+            return toast.error('Enter valid email')
+        }
+        else if(user.password.trim().length < 8){
+            return toast.error('Password length must be greater than 8')
+        }
+        else if(user.password !== user.confirmPassword){
+            return toast.error('Password does not match')
+        }
+
+
         const res = await signup(user)
         if(res){
             navigate('/login')
             toast.success('Signup Successful. Please Login.')
         }
     }
+
+    function validateEmail(email){
+        const regex = /^[\w-]+(\.[\w-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$/;
+        return regex.test(email);
+    }
+
+   
 
 
 
@@ -67,7 +90,7 @@ const Signup = () => {
                                 value={user.email}
                                 onChange={(e)=>setUser({...user,email:e.target.value})}
                                 className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-2 block w-full appearance-none"
-                                type="email"
+                                type="text"
                             />
                         </div>
                         <div className="mt-2">

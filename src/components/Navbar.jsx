@@ -2,6 +2,9 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 const Navbar = () => {
+
+    const user = localStorage.getItem('token')
+
     return (
         <>
             {/* component */}
@@ -12,8 +15,17 @@ const Navbar = () => {
                         {/* Heroicon - Chip Outline */}
                         <h1>E-BID</h1>
                     </Link>
-                  
+
                     <div className="order-2 md:order-3">
+                        {user ?
+
+                            <Link to='/login' className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-gray-50 rounded-xl flex items-center gap-2">
+                                {/* Heroicons - Login Solid */}
+                                
+                                <span>Profile</span>
+                            </Link>
+
+                        :
                         <Link to='/login' className="px-4 py-2 bg-indigo-500 hover:bg-indigo-600 text-gray-50 rounded-xl flex items-center gap-2">
                             {/* Heroicons - Login Solid */}
                             <svg
@@ -29,7 +41,7 @@ const Navbar = () => {
                                 />
                             </svg>
                             <span>Login</span>
-                        </Link>
+                        </Link>}
                     </div>
                 </div>
             </nav>

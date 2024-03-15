@@ -1,9 +1,41 @@
 import React, { useState } from 'react'
 import Navbar from '../../components/Navbar'
-import { Link } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
+import {toast} from 'react-toastify'
+import { login } from '../../apis/user'
+
 
 const Login = () => {
 
+    const [user,setUser] = useState({
+        email:'',
+        password : ''
+    })
+
+    const navigate = useNavigate()
+
+    const loginHandle = async(e)=>{
+        e.preventDefault()
+        if(!validateEmail(user.email)){
+            return toast.error('Enter a valid email')
+        }
+        else if(user.password.trim().length < 8){
+            return toast.error("Invalid email or password")
+        }
+
+        const res = await login(user)
+        if(res){
+            toast.success('Login successful.')
+            console.log(res)
+            localStorage.setItem('token',res.data.token)
+            navigate('/')
+        }
+    }
+
+    function validateEmail(email){
+        const regex = /^[\w-]+(\.[\w-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$/;
+        return regex.test(email);
+    }
 
 
     return (
@@ -18,7 +50,7 @@ const Login = () => {
                                 'url("https://www.shutterstock.com/image-vector/auction-isometric-conceptual-composition-desktop-600nw-731507788.jpg")'
                         }}
                     ></div>
-                    <div className="w-full px-8 py-28 lg:w-1/2">
+                    <form className="w-full px-8 py-28 lg:w-1/2" onSubmit={(e)=>loginHandle(e)}>
                         <h2 className="text-2xl font-semibold text-gray-700 text-center">
                             E-Bid
                         </h2>
@@ -31,6 +63,8 @@ const Login = () => {
                                 Email Address
                             </label>
                             <input
+                            value={user.email}
+                            onChange={(e)=>setUser({...user,email:e.target.value})}
                                 className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-2 block w-full appearance-none"
                                 type="email"
                             />
@@ -42,6 +76,8 @@ const Login = () => {
                                 </label>
                             </div>
                             <input
+                            value={user.password}
+                            onChange={(e)=>setUser({...user,password:e.target.value})}
                                 className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded py-2 px-2 block w-full appearance-none"
                                 type="password"
                             />
@@ -49,7 +85,7 @@ const Login = () => {
 
                         
                         <div className="mt-8">
-                            <button className="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">
+                            <button type='submit' className="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded hover:bg-gray-600">
                                 Login
                             </button>
                         </div>
@@ -60,7 +96,7 @@ const Login = () => {
                             </Link>
                             <span className="border-b w-1/5 md:w-1/4" />
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </>

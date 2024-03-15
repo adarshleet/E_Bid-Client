@@ -12,3 +12,14 @@ export const signup = async(userDetails)=>{
         return errorHandle(error)
     }
 }
+
+
+export const login = async(userDetails)=>{
+    try {
+        const res = await Api.post(userRoutes.login,userDetails)
+        return res
+    } catch (error) {
+        console.log(error)
+        return errorHandle(error)
+    }
+}
