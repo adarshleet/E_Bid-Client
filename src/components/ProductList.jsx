@@ -3,7 +3,6 @@ import { userItems } from '../apis/item'
 import { Link } from 'react-router-dom'
 
 const ProductList = ({ title, items }) => {
-    items = null
 
     if (!items) {
         return (
