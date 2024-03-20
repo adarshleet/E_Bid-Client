@@ -1,4 +1,4 @@
-import { toast } from 'react-toastify';
+import { toast } from 'sonner';
 const errorHandle = (error) => {
     const axiosError = error;
     if (axiosError.response?.data) {
