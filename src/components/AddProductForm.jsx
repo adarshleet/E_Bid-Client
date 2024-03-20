@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { addItem } from '../apis/item'
-import {toast} from 'react-toastify'
+import {toast} from 'sonner'
 const AddProductForm = ({ setShowModal }) => {
 
 

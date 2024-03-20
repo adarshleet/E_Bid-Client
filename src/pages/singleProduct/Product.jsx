@@ -4,7 +4,7 @@ import Table from '../../components/Table'
 import { useParams } from 'react-router-dom';
 import { singleItem } from '../../apis/item';
 import { allBids, createBid, userBid } from '../../apis/bids';
-import { toast } from 'react-toastify'
+import { toast } from 'sonner'
 
 const Product = () => {
     const { id } = useParams();
